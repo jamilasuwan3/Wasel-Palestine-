@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+
+enum UserRole {
+  CITIZEN
+  MODERATOR
+  ADMIN
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum IncidentStatus {
+  OPEN
+  VERIFIED
+  CLOSED
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  email              String              @unique
+  password           String
+  role               UserRole            @default(CITIZEN)
+  reports            Report[]
+  reportVotes        ReportVote[]
+  moderationActions  ModerationLog[]
+  incidentActions    Incident[]          @relation("IncidentVerifiedBy")
+  subscriptions      AlertSubscription[]
+  alerts             Alert[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+
+model Checkpoint {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  location           String
+  currentStatus      String
+  statusHistory      CheckpointStatus[]
+  incidents          Incident[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model CheckpointStatus {
+  id           Int        @id @default(autoincrement())
+  checkpointId Int
+  status       String
+  changedAt    DateTime   @default(now())
+  checkpoint   Checkpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+}
+
+model Incident {
+  id                 Int                 @id @default(autoincrement())
+  title              String
+  description        String
+  severity           IncidentSeverity
+  status             IncidentStatus      @default(OPEN)
+  location           String
+  category           String
+  checkpointId       Int?
+  verifiedById       Int?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  checkpoint         Checkpoint?         @relation(fields: [checkpointId], references: [id])
+  verifiedBy         User?               @relation("IncidentVerifiedBy", fields: [verifiedById], references: [id])
+  alerts             Alert[]
+}
+
+model Report {
+  id                 Int                 @id @default(autoincrement())
+  userId             Int
+  category           String
+  description        String
+  location           String
+  status             ReportStatus        @default(PENDING)
+  credibilityScore   Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes              ReportVote[]
+  moderationLogs     ModerationLog[]
+}
+
+model ReportVote {
+  id        Int      @id @default(autoincrement())
+  reportId  Int
+  userId    Int
+  value     Int
+  createdAt DateTime @default(now())
+
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, userId])
+}
+
+model ModerationLog {
+  id          Int      @id @default(autoincrement())
+  reportId    Int
+  action      String
+  moderatorId Int
+  createdAt   DateTime @default(now())
+
+  report      Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  moderator   User     @relation(fields: [moderatorId], references: [id], onDelete: Cascade)
+}
+
+model AlertSubscription {
+  id                 Int                 @id @default(autoincrement())
+  userId             Int
+  area               String
+  incidentCategory   String
+  createdAt          DateTime            @default(now())
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Alert {
+  id                 Int                 @id @default(autoincrement())
+  userId             Int
+  incidentId         Int
+  message            String
+  createdAt          DateTime            @default(now())
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  incident           Incident            @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+}
+
