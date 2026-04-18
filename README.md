@@ -294,4 +294,6 @@ Course project – Spring 2026
 - Testing
 - Documentation
 
-
+---
+API testing and documentation were performed using API-Dog.  
+The exported collection is included in the project under docs/api-dog.json.
