@@ -104,6 +104,7 @@ Alert:
 - id, userId, incidentId, createdAt
 
 ---
+![ERD Diagram](docs/erd.png)
 
 ## Architecture
 
