@@ -1,64 +1,220 @@
 # Wasel Palestine Backend
 
-## Description
-Wasel Palestine is a backend system built with NestJS to support incident reporting, community reports, checkpoint updates, route estimation, alerts, and authentication.
+## System Overview
+Wasel Palestine is a backend API system designed to support smart mobility and checkpoint intelligence in Palestine.
 
-## Main Features
-- JWT Authentication
-- Incident management
-- Reports management
-- Maps and route estimation
-- Checkpoints module
-- Weather integration
-- Alerts and subscriptions
-- Validation and abuse prevention
+The platform provides structured and reliable data about incidents, checkpoints, routes, alerts, reports, and contextual information such as weather.
 
-## Technologies Used
+This project focuses on backend engineering only, including:
+- RESTful API design
+- Relational database modeling
+- Authentication and authorization
+- External API integration
+- Performance testing
+- Reliability and maintainability
+
+---
+
+## Technology Stack
 - NestJS
 - TypeScript
 - Prisma ORM
 - PostgreSQL
 - Docker
+- JWT Authentication
 - k6 for performance testing
 
-## Project Structure
-- `src/auth` → authentication and authorization
-- `src/incidents` → incidents endpoints and logic
-- `src/reports` → reports endpoints and voting
-- `src/maps` → route estimation
-- `src/checkpoints` → checkpoint status and history
-- `prisma` → database schema and migrations
+---
 
-## API Modules
-- `/api/v1/auth`
-- `/api/v1/incidents`
-- `/api/v1/reports`
-- `/api/v1/maps`
-- `/api/v1/checkpoints`
-- `/api/v1/weather`
-- `/api/v1/alerts`
-- `/api/v1/subscriptions`
+## Main Features
 
-## Abuse Prevention
-- Duplicate report detection
-- Vote protection
+### Authentication
+- Login & Register
+- JWT tokens (access + refresh)
+- Protected routes
+
+### Incidents & Checkpoints
+- Manage incidents
+- Track checkpoints
+- Filtering & pagination
+
+### Reports
+- Users submit reports
+- Validation & duplicate detection
+
+### Routes
+- Distance & duration estimation
+- Avoid checkpoints
+
+### Alerts
+- Subscriptions by area
+- Alert system ready
+
+### External APIs
+- Weather API
+- Routing API
+
+---
+
+## API Design
+
+All endpoints follow:
+
+/api/v1/
+
+### Main Modules
+- /auth
+- /incidents
+- /reports
+- /maps
+- /checkpoints
+- /weather
+- /alerts
+- /subscriptions
+
+### Design Goals
+- Modular
+- Versioned
+- Easy to use
+- Secure with JWT
+
+---
+
+## Database (ERD)
+
+User:
+- id, name, email, password, role
+
+Report:
+- id, category, location, description, createdAt, userId
+
+Incident:
+- id, title, description, category, severity, status, location, createdAt
+
+Checkpoint:
+- id, name, location, status
+
+CheckpointHistory:
+- id, checkpointId, oldStatus, newStatus, changedAt
+
+Subscription:
+- id, userId, area, incidentCategory
+
+Alert:
+- id, userId, incidentId, createdAt
+
+---
+
+## Architecture
+
+- Controllers → handle requests
+- Services → business logic
+- Prisma → database
+- Modules → structure
+
+---
+
+## External APIs
+
+Routing API:
+- distance
+- duration
+
+Weather API:
+- environmental data
+
+---
+
+## Validation
 - DTO validation
-- Request validation with `ValidationPipe`
+- duplicate detection
+- request validation
 
-## External API Handling
-- Timeout support
-- Error handling
-- Basic caching for route requests
+---
 
-## Performance Testing (k6)
-- Read-heavy: tested `GET /incidents` with 10 virtual users for 10 seconds, 100% success rate.
-- Write-heavy: tested protected POST endpoints using valid JWT token.
-- Mixed: tested read and write operations together.
-- Spike: tested sudden increase in traffic.
-- Soak: tested system stability over longer duration.
+## Authentication
+- JWT based
+- Access + Refresh tokens
 
-## How to Run
-```bash
-npm install
-npm run start:dev
+Header:
+Authorization: Bearer <token>
 
+---
+
+## Testing
+
+### API Testing
+- API-Dog
+
+### Performance Testing (k6)
+
+Read Test:
+- GET /incidents
+- 10 users
+- 10 seconds
+- 100% success
+
+Write Test:
+- POST /reports
+- with valid token
+
+Other:
+- Mixed load
+- Spike test
+- Soak test
+
+---
+
+## Performance Notes
+- Stable performance
+- No errors in read
+- Fixed token issues
+- Caching improved speed
+
+---
+
+## Project Structure
+
+src/
+- auth/
+- incidents/
+- reports/
+- maps/
+- checkpoints/
+- weather/
+
+prisma/
+test/
+
+---
+
+## Run Project
+
+npm install  
+npm run start:dev  
+
+---
+
+## Docker
+- Dockerfile
+- docker-compose.yaml
+
+---
+
+## Git Workflow
+- GitHub repo
+- main branch
+- commits tracked
+
+---
+
+## Notes
+Course project – Spring 2026
+
+---
+
+## Team Work
+- API development
+- Database design
+- Testing
+- Documentation
