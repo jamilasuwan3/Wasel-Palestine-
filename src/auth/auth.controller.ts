@@ -13,4 +13,8 @@ export class AuthController {
 login(@Body() body: any) {
   return this.authService.login(body);
 }
+@Post('refresh')
+refresh(@Body() body: any) {
+  return this.authService.refreshToken(body);
+}
 }

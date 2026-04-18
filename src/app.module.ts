@@ -10,10 +10,13 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { AlertsModule } from './alerts/alerts.module';
 import { WeatherModule } from './weather/weather.module';
 import { MapsModule } from './maps/maps.module';
+import { CheckpointsModule } from './checkpoints/checkpoints.module';
+
 @Module({
   
-  imports: [IncidentsModule, PrismaModule, AuthModule, UsersModule, ReportsModule, AlertsModule,   SubscriptionsModule, WeatherModule, MapsModule],
+  imports: [IncidentsModule,   CheckpointsModule, PrismaModule, AuthModule, UsersModule, ReportsModule, AlertsModule,   SubscriptionsModule, WeatherModule, MapsModule],
   controllers: [AppController],
   providers: [AppService],
+  
 })
 export class AppModule {}

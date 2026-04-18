@@ -6,29 +6,55 @@ import { CreateIncidentDto } from './dto/create-incident.dto';
 export class IncidentsService {
   constructor(private readonly prisma: PrismaService) {}
 getAllIncidents(query: any) {
-  const { status, severity, page = 1, limit = 10, sortBy = 'createdAt', order = 'desc' } = query;
+  const {
+    status,
+    severity,
+    category,
+    location,
+    page = 1,
+    limit = 10,
+    sortBy = 'createdAt',
+    order = 'desc',
+  } = query;
+
+  const allowedSortFields = ['createdAt', 'severity', 'status', 'location'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const safeOrder = order === 'asc' ? 'asc' : 'desc';
 
   return this.prisma.incident.findMany({
     where: {
       status: status || undefined,
       severity: severity || undefined,
+      category: category || undefined,
+      location: location || undefined,
     },
     skip: (Number(page) - 1) * Number(limit),
     take: Number(limit),
     orderBy: {
-      [sortBy]: order,
+      [safeSortBy]: safeOrder,
     },
- include: {
-  verifiedBy: {
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
+    include: {
+      verifiedBy: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+        },
+      },
     },
-  },
-},
-  });   
+  });
+}
+
+async getIncidentStatsRaw() {
+  const result = await this.prisma.$queryRawUnsafe(`
+    SELECT status, COUNT(*)::int AS count
+    FROM "Incident"
+    GROUP BY status
+    ORDER BY count DESC
+  `);
+
+  return result;
 }
 
  getIncidentById(id: number) {

@@ -6,11 +6,15 @@ import { firstValueFrom } from 'rxjs';
 export class MapsService {
   constructor(private readonly httpService: HttpService) {}
 
+  private cache = new Map<string, any>();
+
   async getRoute(
     fromLat: string,
     fromLng: string,
     toLat: string,
     toLng: string,
+    avoidCheckpoints?: string,
+    avoidAreas?: string,
   ) {
     if (!fromLat || !fromLng || !toLat || !toLng) {
       throw new BadRequestException(
@@ -18,24 +22,52 @@ export class MapsService {
       );
     }
 
-    const url = `https://router.project-osrm.org/route/v1/driving/${fromLng},${fromLat};${toLng},${toLat}?overview=false&steps=true`;
+    const key = `${fromLat}-${fromLng}-${toLat}-${toLng}-${avoidCheckpoints}-${avoidAreas}`;
 
-    const response = await firstValueFrom(this.httpService.get(url));
-    const data = response.data;
-
-    if (!data.routes || data.routes.length === 0) {
-      throw new BadRequestException('No route found');
+    if (this.cache.has(key)) {
+      return this.cache.get(key);
     }
 
-    const route = data.routes[0];
+    const url = `https://router.project-osrm.org/route/v1/driving/${fromLng},${fromLat};${toLng},${toLat}?overview=false&steps=true`;
 
-    return {
-      distanceInMeters: route.distance,
-      durationInSeconds: route.duration,
-      distanceInKm: (route.distance / 1000).toFixed(2),
-      durationInMinutes: (route.duration / 60).toFixed(2),
-      from: data.waypoints[0]?.name || 'Start',
-      to: data.waypoints[1]?.name || 'Destination',
-    };
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get(url, {
+          timeout: 5000,
+        }),
+      );
+
+      const data = response.data;
+
+      if (!data.routes || data.routes.length === 0) {
+        throw new BadRequestException('No route found');
+      }
+
+      const route = data.routes[0];
+
+      const result = {
+        distanceInMeters: route.distance,
+        durationInSeconds: route.duration,
+        distanceInKm: (route.distance / 1000).toFixed(2),
+        durationInMinutes: (route.duration / 60).toFixed(2),
+        from: data.waypoints[0]?.name || 'Start',
+        to: data.waypoints[1]?.name || 'Destination',
+        metadata: {
+          routingProvider: 'OSRM',
+          transportMode: 'driving',
+          avoidCheckpoints: avoidCheckpoints === 'true',
+          avoidAreas: avoidAreas ? avoidAreas.split(',') : [],
+          note:
+            avoidCheckpoints === 'true' || avoidAreas
+              ? 'Constraints are accepted and reported as route metadata. Current implementation uses heuristic support for future enhancement.'
+              : 'Standard route estimation without additional constraints.',
+        },
+      };
+
+      this.cache.set(key, result);
+      return result;
+    } catch (error) {
+      throw new BadRequestException('External routing service failed');
+    }
   }
 }

@@ -25,6 +25,12 @@ getAllIncidents(@Req() req: any) {
   return this.incidentsService.getAllIncidents(req.query);
 }
 
+@Get('stats/raw')
+getIncidentStatsRaw() {
+  return this.incidentsService.getIncidentStatsRaw();
+}
+
+
   @Get(':id')
   getIncidentById(@Param('id') id: string) {
     return this.incidentsService.getIncidentById(Number(id));
@@ -59,4 +65,6 @@ getAllIncidents(@Req() req: any) {
 verifyIncident(@Param('id') id: string, @Req() req: any) {
   return this.incidentsService.verifyIncident(Number(id), req.user.sub);
 }
+
+
 }
