@@ -5,12 +5,35 @@ import { PrismaService } from '../prisma/prisma.service';
 export class SubscriptionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createSubscription(body: any, userId: number) {
-    return this.prisma.alertSubscription.create({
-      data: {
-        ...body,
-        userId,
-      },
-    });
+async createSubscription(body: any, userId: number) {
+  const existing = await this.prisma.alertSubscription.findFirst({
+    where: {
+      userId,
+      area: body.area,
+      incidentCategory: body.incidentCategory,
+    },
+  });
+
+  if (existing) {
+    return { message: 'Subscription already exists' };
   }
+
+  return this.prisma.alertSubscription.create({
+    data: {
+      area: body.area,
+      incidentCategory: body.incidentCategory,
+      userId,
+    },
+  });
 }
+  
+getUserSubscriptions(userId: number) {
+  return this.prisma.alertSubscription.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
+}
+
+

@@ -140,7 +140,7 @@ Weather API:
 - Access + Refresh tokens
 
 Header:
-Authorization: Bearer <token>
+Authorization: Bearer <access_token>
 
 ---
 
@@ -263,8 +263,8 @@ test/
 
 ## Run Project
 
-npm install  
-npm run start:dev  
+npm install
+npm run start:dev
 
 ---
 
