@@ -317,7 +317,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/subscriptions": {
@@ -338,6 +342,155 @@
                 "area": "Ramallah",
                 "incidentCategory": "checkpoint"
               }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": " GET /subscriptions",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fromLat",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "32.2211",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromLng",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "35.2544",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toLat",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "31.9038",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toLng",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "35.2034",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "Ramallah",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "OPEN",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "HIGH",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "5",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "createdAt",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
             }
           },
           "required": true
@@ -612,8 +765,8 @@
               "example": {
                 "name": "Test User",
                 "email": "user1@example.com",
-                "password": "123456",
-                "role": "CITIZEN"
+                "password": "123456"
+      
               }
             }
           },
@@ -1117,6 +1270,163 @@
           }
         },
         "security": []
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "GET /api/v1/users",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": [
+                  {
+                    "id": 6,
+                    "title": "Military checkpoint",
+                    "description": "Slow movement",
+                    "severity": "HIGH",
+                    "status": "OPEN",
+                    "location": "Jenin",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": null,
+                    "createdAt": "2026-04-09T20:15:00.751Z",
+                    "updatedAt": "2026-04-09T20:15:00.751Z",
+                    "verifiedBy": null
+                  },
+                  {
+                    "id": 2,
+                    "title": "Checkpoint crowd",
+                    "description": "Heavy congestion",
+                    "severity": "HIGH",
+                    "status": "OPEN",
+                    "location": "Ramallah",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": null,
+                    "createdAt": "2026-04-09T20:15:00.751Z",
+                    "updatedAt": "2026-04-09T20:15:00.751Z",
+                    "verifiedBy": null
+                  },
+                  {
+                    "id": 3,
+                    "title": "Checkpoint delay",
+                    "description": "Cars waiting long time",
+                    "severity": "HIGH",
+                    "status": "OPEN",
+                    "location": "Nablus",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": null,
+                    "createdAt": "2026-04-09T20:15:00.751Z",
+                    "updatedAt": "2026-04-09T20:15:00.751Z",
+                    "verifiedBy": null
+                  },
+                  {
+                    "id": 4,
+                    "title": "Road closed",
+                    "description": "Temporary closure",
+                    "severity": "MEDIUM",
+                    "status": "OPEN",
+                    "location": "Hebron",
+                    "category": "road",
+                    "checkpointId": null,
+                    "verifiedById": null,
+                    "createdAt": "2026-04-09T20:15:00.751Z",
+                    "updatedAt": "2026-04-09T20:15:00.751Z",
+                    "verifiedBy": null
+                  },
+                  {
+                    "id": 5,
+                    "title": "Traffic jam",
+                    "description": "Heavy traffic reported",
+                    "severity": "LOW",
+                    "status": "OPEN",
+                    "location": "Bethlehem",
+                    "category": "traffic",
+                    "checkpointId": null,
+                    "verifiedById": null,
+                    "createdAt": "2026-04-09T20:15:00.751Z",
+                    "updatedAt": "2026-04-09T20:15:00.751Z",
+                    "verifiedBy": null
+                  },
+                  {
+                    "id": 8,
+                    "title": "Checkpoint delay",
+                    "description": "Long waiting line",
+                    "severity": "HIGH",
+                    "status": "OPEN",
+                    "location": "Ramallah",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": 8,
+                    "createdAt": "2026-04-09T18:20:30.645Z",
+                    "updatedAt": "2026-04-09T18:20:30.645Z",
+                    "verifiedBy": {
+                      "id": 8,
+                      "name": "Tjamilasuwan",
+                      "email": "jamilasuwan@example.com",
+                      "role": "CITIZEN"
+                    }
+                  },
+                  {
+                    "id": 7,
+                    "title": "Checkpoint delay",
+                    "description": "Long waiting line",
+                    "severity": "HIGH",
+                    "status": "VERIFIED",
+                    "location": "Nablus",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": 1,
+                    "createdAt": "2026-04-09T17:39:41.132Z",
+                    "updatedAt": "2026-04-09T17:41:25.400Z",
+                    "verifiedBy": {
+                      "id": 1,
+                      "name": "Admin",
+                      "email": "admin@example.com",
+                      "role": "ADMIN"
+                    }
+                  },
+                  {
+                    "id": 1,
+                    "title": "Checkpoint crowd",
+                    "description": "Heavy congestion",
+                    "severity": "HIGH",
+                    "status": "OPEN",
+                    "location": "Ramallah",
+                    "category": "checkpoint",
+                    "checkpointId": null,
+                    "verifiedById": 1,
+                    "createdAt": "2026-04-09T17:10:00.147Z",
+                    "updatedAt": "2026-04-09T17:10:00.147Z",
+                    "verifiedBy": {
+                      "id": 1,
+                      "name": "Admin",
+                      "email": "admin@example.com",
+                      "role": "ADMIN"
+                    }
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
