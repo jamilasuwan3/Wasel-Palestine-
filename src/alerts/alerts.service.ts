@@ -5,21 +5,11 @@ import { PrismaService } from '../prisma/prisma.service';
 export class AlertsService {
   constructor(private readonly prisma: PrismaService) {}
 
- getAllAlerts() {
-  return this.prisma.alert.findMany({
-    include: {
-      incident: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
-    },
-  });
-}
+  getMyAlerts(userId: number) {
+    return this.prisma.alert.findMany({
+      where: { userId },
+      include: { incident: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

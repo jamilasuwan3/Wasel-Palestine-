@@ -140,7 +140,7 @@ Weather API:
 - Access + Refresh tokens
 
 Header:
-Authorization: Bearer <token>
+Authorization: Bearer <access_token>
 
 ---
 
@@ -263,8 +263,8 @@ test/
 
 ## Run Project
 
-npm install  
-npm run start:dev  
+npm install
+npm run start:dev
 
 ---
 
@@ -294,4 +294,6 @@ Course project – Spring 2026
 - Testing
 - Documentation
 
-
+---
+API testing and documentation were performed using API-Dog.  
+The exported collection is included in the project under docs/api-dog.json.
