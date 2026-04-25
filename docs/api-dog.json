@@ -365,6 +365,155 @@
             "bearer": []
           }
         ]
+      },
+      "get": {
+        "summary": " GET /subscriptions",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "fromLat",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "32.2211",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromLng",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "35.2544",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toLat",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "31.9038",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toLng",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "35.2034",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "Ramallah",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "OPEN",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "HIGH",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "5",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "createdAt",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/maps/route": {
@@ -616,8 +765,8 @@
               "example": {
                 "name": "Test User",
                 "email": "user1@example.com",
-                "password": "123456",
-                "role": "CITIZEN"
+                "password": "123456"
+      
               }
             }
           },
